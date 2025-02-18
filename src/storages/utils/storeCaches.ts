@@ -54,6 +54,13 @@ export async function storeCaches({
         property: StorageProperty.Pools,
         value: { value: poolsCache, timestamp },
       }));
+
+    // Log storage stats
+    console.log(`\n[${provider}] Storage stats:`);
+    console.log(`Coins stored: ${coins.length}`);
+    if (pathsCache) console.log(`Paths stored: ${Array.from(pathsCache.values()).length}`);
+    if (poolsCache) console.log(`Pools stored: ${poolsCache.length}`);
+    if (coinsMetadataCache) console.log(`Coins metadata stored: ${coinsMetadataCache.length}`);
   } catch (error) {
     console.error(`[storeCaches] error for params: provider ${provider} `, error);
 
