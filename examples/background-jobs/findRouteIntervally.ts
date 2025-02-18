@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable require-jsdoc */
 
 import { Transaction } from "@mysten/sui/transactions";
+import BigNumber from "bignumber.js";
 import { createClient } from "redis";
 import { AftermathSingleton, CetusSingleton, FlowxSingleton, TurbosSingleton } from "../../src";
 import { NoRoutesError } from "../../src/errors/NoRoutesError";
@@ -11,8 +13,11 @@ import { SHORT_SUI_COIN_TYPE } from "../../src/providers/common";
 import { RedisStorageSingleton } from "../../src/storages/RedisStorage";
 import { USDC_COIN_TYPE } from "../coin-types";
 import { cacheOptions, newKeypair, newProvider, suiProviderUrl, user } from "../common";
+import { getCurrentDateTime } from "../utils";
 
-const FIND_ROUTE_INTERVAL_MS = 1000 * 10; // 10 seconds
+require("log-timestamp")(getCurrentDateTime);
+
+const FIND_ROUTE_INTERVAL_MS = 1000 * 5; // 5 seconds
 
 const ROUTE_PARAMS = {
   tokenFrom: SHORT_SUI_COIN_TYPE,
@@ -70,10 +75,19 @@ async function findRoute() {
     const { maxOutputProvider, maxOutputAmount, route } = await routerManager.getBestRouteData(ROUTE_PARAMS);
 
     if (route) {
+      const coinOut = await coinManager.getCoinByType2(ROUTE_PARAMS.tokenTo);
+
       console.log("\n[Route Search] Successfully found route!");
       console.log(`Provider: ${maxOutputProvider.providerName}`);
       console.log(`Input Amount: ${ROUTE_PARAMS.amount} ${ROUTE_PARAMS.tokenFrom}`);
-      console.log(`Output Amount: ${maxOutputAmount} ${ROUTE_PARAMS.tokenTo}`);
+      if (coinOut) {
+        const outputAmountWithDecimals = new BigNumber(maxOutputAmount.toString())
+          .div(10 ** coinOut.decimals)
+          .toString();
+        console.log(`Output Amount: ${outputAmountWithDecimals} ${ROUTE_PARAMS.tokenTo}`);
+      } else {
+        console.log(`Output Amount: ${maxOutputAmount} ${ROUTE_PARAMS.tokenTo}`);
+      }
 
       if (SHOULD_EXECUTE_SWAP) {
         console.time("Swap execution");
