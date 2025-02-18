@@ -126,6 +126,9 @@ export class AftermathSingleton extends EventEmitter implements IPoolProviderWit
         updateCacheInterval: this.cacheOptions.updateIntervalInMs,
       });
 
+      console.log("[Aftermath] Got coins cache from storage:", coinsCache.size);
+      console.log("[Aftermath] Got paths cache from storage:", pathsCache.size);
+
       this.coinsCache = coinsCache;
       this.pathsCache = pathsCache;
     } catch (error) {
@@ -224,6 +227,7 @@ export class AftermathSingleton extends EventEmitter implements IPoolProviderWit
   private async updatePoolsCache(): Promise<void> {
     const poolsInstance = this.aftermathSdk.Pools();
     const pools: Pool[] = await poolsInstance.getAllPools();
+    console.log("[Aftermath] Pools fetched:", pools.length);
     const isValidPoolsResponse = isApiResponseValid(pools);
 
     if (!isValidPoolsResponse) {
@@ -254,6 +258,7 @@ export class AftermathSingleton extends EventEmitter implements IPoolProviderWit
     try {
       const coin = this.aftermathSdk.Coin();
       const metadatas = await coin.getCoinMetadatas({ coins: missingCoinTypes });
+      console.log("[Aftermath] New coins fetched:", metadatas.length);
 
       metadatas.forEach((metadata, i) => {
         if (isCoinMetadaWithInfoApiResponseValid(metadata)) {

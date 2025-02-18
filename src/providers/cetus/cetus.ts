@@ -156,6 +156,9 @@ export class CetusSingleton extends EventEmitter implements IPoolProviderWithSma
         updateCacheInterval: this.cacheOptions.updateIntervalInMs,
       });
 
+      console.log("[Cetus] Got coins cache from storage:", coinsCache.size);
+      console.log("[Cetus] Got paths cache from storage:", pathsCache.size);
+
       this.coinsCache = coinsCache;
       this.pathsCache = pathsCache;
 
@@ -257,6 +260,7 @@ export class CetusSingleton extends EventEmitter implements IPoolProviderWithSma
    */
   private async updatePoolsCache(signal?: AbortSignal) {
     this.poolsCache = await this.retrieveAllPoolsFromApi(signal);
+    console.log("[Cetus] Pools fetched:", this.poolsCache.length);
   }
 
   /**
