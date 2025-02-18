@@ -143,6 +143,10 @@ export class TurbosSingleton extends EventEmitter implements IPoolProviderWithou
         updateCacheInterval: this.cacheOptions.updateIntervalInMs,
       });
 
+      console.log("[Turbos] Got coins cache from storage:", coinsCache.size);
+      console.log("[Turbos] Got paths cache from storage:", pathsCache.size);
+      console.log("[Turbos] Got pools cache from storage:", poolsCache.length);
+
       this.coinsCache = coinsCache;
       this.pathsCache = pathsCache;
       this.poolsCache = poolsCache;
@@ -242,6 +246,7 @@ export class TurbosSingleton extends EventEmitter implements IPoolProviderWithou
    */
   private async updatePoolsCache(signal?: AbortSignal): Promise<void> {
     const pools: PoolData[] = await this.fetchPoolsFromApi(signal);
+    console.log("[Turbos] Pools fetched:", pools.length);
     this.poolsCache = pools.map((pool: PoolData) => ({
       poolId: pool.pool_id,
       coinTypeA: pool.coin_type_a,
@@ -267,6 +272,7 @@ export class TurbosSingleton extends EventEmitter implements IPoolProviderWithou
    */
   private async updateCoinsCache(signal?: AbortSignal): Promise<void> {
     const coins: CoinData[] = await this.fetchCoinsFromApi(signal);
+    console.log("[Turbos] Coins fetched:", coins.length);
     this.coinsCache = getCoinsMap(coins);
   }
 

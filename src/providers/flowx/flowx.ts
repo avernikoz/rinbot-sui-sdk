@@ -116,6 +116,9 @@ export class FlowxSingleton extends EventEmitter implements IPoolProviderWithSma
         updateCacheInterval: this.cacheOptions.updateIntervalInMs,
       });
 
+      console.log("[Flowx] Got coins cache from storage:", coinsCache.size);
+      console.log("[Flowx] Got coins metadata cache from storage:", coinsMetadataCache.length);
+
       this.coinsCache = coinsCache;
       this.coinsMetadataCache = coinsMetadataCache;
     } catch (error) {
@@ -243,6 +246,8 @@ export class FlowxSingleton extends EventEmitter implements IPoolProviderWithSma
         throw error;
       }
     } while (hasMorePages);
+
+    console.log("[Flowx] Coins fetched:", allCoins.length);
 
     const { coinMap } = getCoinsMap({ coinList: allCoins.map((coin) => ({ ...coin, type: coin.coinType })) });
     this.coinsMetadataCache = allCoins.map(({ coinType, decimals }) => ({ coinType, decimals }));
