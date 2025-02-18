@@ -12,7 +12,7 @@ import { InMemoryStorageSingleton } from "../../storages/InMemoryStorage";
 import { Storage } from "../../storages/types";
 import { getCoinsAndPathsCaches } from "../../storages/utils/getCoinsAndPathsCaches";
 import { storeCaches } from "../../storages/utils/storeCaches";
-import { exitHandlerWrapper, LONG_SUI_COIN_TYPE, SHORT_SUI_COIN_TYPE } from "../common";
+import { exitHandlerWrapper } from "../common";
 import { CacheOptions, CoinsCache, CommonPoolData, IPoolProviderWithSmartRouting, PathsCache } from "../types";
 import { convertSlippage } from "../utils/convertSlippage";
 import { executeWithTimeout } from "../utils/executeWithTimeout";
