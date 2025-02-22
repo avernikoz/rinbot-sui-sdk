@@ -12,6 +12,7 @@ export * from "./managers/FeeManager";
 
 // Providers (common & utils)
 export * from "./providers/common";
+export * from "./providers/types";
 export * from "./providers/utils/convertSlippage";
 export * from "./providers/utils/convertToBNFormat";
 export * from "./providers/utils/isValidTokenAddress";
@@ -21,6 +22,8 @@ export * from "./providers/utils/getSuiProvider";
 export * from "./providers/utils/isValidTokenAmount";
 export * from "./providers/utils/transactionFromSerializedTransaction";
 export * from "./providers/utils/isSuiCoinType";
+export * from "./providers/utils/convertRawTokenAmount";
+export * from "./providers/utils/getAddressByDomain";
 
 // Aftermath
 export * from "./providers/aftermath/aftermath";
